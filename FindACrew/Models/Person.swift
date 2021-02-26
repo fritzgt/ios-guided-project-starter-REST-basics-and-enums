@@ -8,13 +8,14 @@
 
 import Foundation
 
-struct Person {
+//Custom object and using codable to convert from the external type in this case JSON into  our custom type 
+struct Person: Codable {
     let name: String
     let birthYear: String
     let height: String
 }
 
 
-struct PersonSearch {
+struct PersonSearch: Codable {
     let results: [Person]
 }
