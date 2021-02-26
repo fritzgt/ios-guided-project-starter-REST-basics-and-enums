@@ -13,3 +13,8 @@ struct Person {
     let birthYear: String
     let height: String
 }
+
+
+struct PersonSearch {
+    let results: [Person]
+}
