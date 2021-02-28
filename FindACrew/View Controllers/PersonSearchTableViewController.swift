@@ -16,7 +16,6 @@ class PersonSearchTableViewController: UITableViewController {
     
     //MARK: - Properties
     private let personController = PersonController()
-    private let leia = Person(name: "Leia Organa", birthYear: "19BBY", height: "150")
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -26,21 +25,16 @@ class PersonSearchTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return personController.people.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PersonTableViewCell.reuseIdentifier, for: indexPath) as! PersonTableViewCell
 
-        // Configure the cell...
-        cell.nameLabel.text = leia.name
-        cell.heightLabel.text = "\(leia.height) cm"
-        cell.birthYearLabel.text = "Born \(leia.birthYear)"
+        let person = personController.people[indexPath.row]
+        cell.person = person
+        
         return cell
     }
 }
@@ -48,6 +42,15 @@ class PersonSearchTableViewController: UITableViewController {
 //MARK: - UISearchBarDelegate
 extension PersonSearchTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchTerm = searchBar.text else { return }
+        searchBar.resignFirstResponder()//Dismiss keyboard after press return and there is a search term
         
+        //Pass search term to the API call and when the completion finish reload tableview
+        personController.searchForPeople(searchTerm: searchTerm) {
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
