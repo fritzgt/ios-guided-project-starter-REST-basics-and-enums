@@ -41,7 +41,19 @@ class PersonController {
         //Data task, [weak self] to prevent memory leaks
         URLSession.shared.dataTask(with: request) {[weak self] (data, _, error) in
             
+            if let error = error {
+                print("Error Fetching data: \(error)")
+                completion()
+                return
+            }
             
+            guard let self = self else {return}
+            
+            guard let data = data else {
+                print("No data returned from data task")
+                completion()
+                return
+            }
             
         }.resume()
     }
