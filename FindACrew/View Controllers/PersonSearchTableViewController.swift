@@ -10,10 +10,15 @@ import UIKit
 
 class PersonSearchTableViewController: UITableViewController {
     
+    
+    //MARK: - Outlets
     @IBOutlet weak var searchBar: UISearchBar!
     
-    let leia = Person(name: "Leia Organa", birthYear: "19BBY", height: "150")
+    //MARK: - Properties
+    private let personController = PersonController()
+    private let leia = Person(name: "Leia Organa", birthYear: "19BBY", height: "150")
 
+    //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
@@ -40,6 +45,7 @@ class PersonSearchTableViewController: UITableViewController {
     }
 }
 
+//MARK: - UISearchBarDelegate
 extension PersonSearchTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         

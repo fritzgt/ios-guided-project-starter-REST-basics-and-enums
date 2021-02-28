@@ -47,13 +47,32 @@ class PersonController {
                 return
             }
             
-            guard let self = self else {return}
+            guard let self = self else {
+                completion()
+                return
+            }
             
             guard let data = data else {
                 print("No data returned from data task")
                 completion()
                 return
             }
+            
+            let jsonDecoder = JSONDecoder()
+            
+            //Use to convert camel case to snake case for the Model to match the json format of the name of each property
+            jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            do{
+                let personSearch = try jsonDecoder.decode(PersonSearch.self, from: data)
+                self.people.append(contentsOf: personSearch.results)
+                completion()
+            }catch{
+                print("Unable to decode data of type PersonSearch: \(error)")
+                completion()
+                return
+            }
+            
             
         }.resume()
     }
